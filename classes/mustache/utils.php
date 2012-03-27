@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class MustacheUtils
+class Mustache_Utils
 {
 	public static function normalize($result)
 	{
