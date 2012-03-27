@@ -8,13 +8,14 @@
  * @copyright  (c) 2011 Ronni Egeriis Persson
  * @license    MIT
  */
-class Controller_Mustache extends Controller_Template
+abstract class Mustache_Controller extends Controller_Template
 {
 	/**
-	 * @var  MustacheView  Holds the current view
+	 * @var  Mustache_View  Holds the current view
 	 */
 	public $view;
 	protected $data_cache = 'no-cache';
+	
 	
 	/**
 	 * Check if the HTTP request is made through AJAX. If that's the case, it will 
@@ -38,9 +39,16 @@ class Controller_Mustache extends Controller_Template
 	 */
 	protected function expose_view()
 	{
-		header('Content-Type: application/json', true);
-		header('Cache-Control: ' . $this->data_cache, true);
-		exit(json_encode($this->view->expose_data()));
+		$out = json_encode($this->view->expose_data());
+		$contentLength = function_exists('mb_strlen') ? mb_strlen($out, '8bit') : strlen($out);
+		
+		$this->response->headers('Cache-control', $this->data_cache);
+		$this->response->headers('Content-Type', 'application/json');
+		$this->response->send_headers();
+		
+		$this->response->body($out);
+		echo $this->response->body();
+		exit();
 	}
 	
 	/**
