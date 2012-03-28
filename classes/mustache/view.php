@@ -7,6 +7,7 @@ class Mustache_View extends Kohana_View
 
 	public function __construct($name, array $data = array())
 	{
+		$this->_name = $name;
 		parent::__construct($name, $data);
 	}
 	
@@ -30,6 +31,10 @@ class Mustache_View extends Kohana_View
 	public function expose_data()
 	{
 		return array('data' => $this->_data, 'view' => $this->_name);
+	}
+	
+	public function getName() {
+		return $this->_name;
 	}
 
 	
