@@ -31,6 +31,10 @@ abstract class Mustache_Controller extends Controller_Template
 		parent::after();
 	}
 	
+  protected function expose_data() {
+    return $this->view->expose_data();
+  }
+  
 	/**
 	 * Method used to set JSON Content-Type header and respond with JSON data.
 	 * This method calls exit, thus no other methods are called after this.
@@ -39,9 +43,7 @@ abstract class Mustache_Controller extends Controller_Template
 	 */
 	protected function expose_view()
 	{
-    $data = $this->view->expose_data();
-    $data['action'] = $this->request->action();
-		$out = json_encode($data);
+		$out = json_encode($this->expose_data());
 		$contentLength = function_exists('mb_strlen') ? mb_strlen($out, '8bit') : strlen($out);
 		
 		$this->response->headers('Cache-control', $this->data_cache);
