@@ -39,7 +39,9 @@ abstract class Mustache_Controller extends Controller_Template
 	 */
 	protected function expose_view()
 	{
-		$out = json_encode($this->view->expose_data());
+    $data = $this->view->expose_data();
+    $data['action'] = $this->request->action();
+		$out = json_encode($data);
 		$contentLength = function_exists('mb_strlen') ? mb_strlen($out, '8bit') : strlen($out);
 		
 		$this->response->headers('Cache-control', $this->data_cache);
